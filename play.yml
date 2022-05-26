@@ -1,0 +1,28 @@
+---
+- name: getting all hosts info
+  hosts: localhost
+  gather_facts: false
+  vars:
+    hostnew: []
+  tasks:
+    - name: group by the tasks
+      set_fact:
+        host_info: "{{hostnew.split(',')}}"
+
+    - name: add host
+      add_host:
+        name: "{{ item }}"   
+        group: all
+      loop: "{{host_info}}"
+
+- name: ping hosts
+  hosts: all
+  tasks:
+    - name: print hostname
+      template:
+        src: template.j2
+        dest: /tmp/output
+      delegate_to: localhost
+    - name: testing data
+      debug:
+        msg: "{{inventory_hostname}}"

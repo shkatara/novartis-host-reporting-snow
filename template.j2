@@ -1,0 +1,7 @@
+HOST NAME,FREE MEM,CPU,/USR SIZE
+{{ ansible_facts['fqdn'] }},{{ ansible_facts['memfree_mb'] }},{{ ansible_facts['processor_count'] }}, 
+{%- for mount in ansible_facts['mounts'] -%}
+{%- if mount.mount=="/data" -%}
+{{ mount.size_available|filesizeformat }}
+{%- endif -%}
+{%- endfor -%}
