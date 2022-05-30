@@ -20,12 +20,18 @@
   tasks:
     - name: print debug
       debug:
-        msg: "{{ ansible_facts   }}"
-    - name: print hostname
+        msg: "the ips are {{ ansible_facts.all_ipv4_addresses }}"
+
+    - name: print hostnae
       template:
-        src: template.j2
-        dest: /tmp/output
+        src: template-all.j2
+        dest: /tmp/snow/output-{{inventory_hostname}}
       delegate_to: localhost
-    - name: testing data
-      debug:
-        msg: "{{inventory_hostname}}"
+    
+    - name: append into one
+      assemble: 
+        src: /tmp/snow/
+        dest: final.csv
+      delegate_to: localhost
+
+...
